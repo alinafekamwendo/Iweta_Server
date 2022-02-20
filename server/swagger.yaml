@@ -1,0 +1,21 @@
+swagger: "2.0"
+info:
+  title: "iWETA system api"
+  version: "1.0.0"
+  description: "restapi for iweta pig and cattle management system, our final year project"
+  contact: 
+    email: "bed-com-15-17@gmail.com"
+  liscence:
+    name: Apache 2.0
+    url: "http://apache.org/"
+  servers:
+    -url: "http://localhost:3001"
+    description: The server runs on port 3001 locally
+
+schemes: [http,https]
+
+paths:
+  /auth/register:
+    post:
+      summary: creater user in the database
+      description: post user with username,role and password

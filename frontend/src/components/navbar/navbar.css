@@ -1,0 +1,9 @@
+.Navcontainer{
+    display: flex;
+    margin: 10px;
+}
+.NavcontainerWidgets{
+    flex: 6;
+        
+         
+}

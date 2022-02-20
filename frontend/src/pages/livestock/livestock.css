@@ -1,0 +1,30 @@
+.livestock {
+    flex: 4;
+   
+  }
+  .livestockWidgets{
+    margin: 20px;
+  }
+
+  .createLivestockContainer{
+    flex: 1;
+    height: 70px;
+    margin: 0px 10px;
+    padding: 5px;
+    border-radius: 10px;
+    -webkit-box-shadow: 0px 0px 11px -1px #9b8989;
+    box-shadow: 0px 0px 11px #9b8989;
+    }
+
+  .displayInline{
+    display:flex;
+    justify-content: space-between;
+    cursor: pointer;
+  }
+
+  .close-modal{
+    
+    cursor:pointer;
+    right:10px;
+    margin-left: 1150px;
+  }

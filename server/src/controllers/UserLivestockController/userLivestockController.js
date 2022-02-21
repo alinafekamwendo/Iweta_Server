@@ -5,7 +5,7 @@ const { validateToken } = require("../../../middlewares/AuthMiddleware");
 
 userLivestockController.get("/api/khola/livestock", async (req, res) => {
   const allKholaLivestock = await UserLivestocks.findAll();
-  res.status(200).json({ listInThisKhola: allKholaLivestock});
+  res.status(200).json({ listOfKholas: allKholaLivestock});
 });
 
  userLivestockController.get("/api/khola/livestock/byId/:id", async (req, res) => {

@@ -100,7 +100,8 @@ const basicInfo = await Users.findByPk(id, {
 
 });
 
-registerRouter.get("/auth/users", validateToken,async (req, res) => {
+registerRouter.get("/auth/users",async (req, res) => {
+  res.set('Access-Control-Allow-Origin', '*');
  
   const allUsers = await Users.findAll({attributes: {exclude: ["password "]}});
 

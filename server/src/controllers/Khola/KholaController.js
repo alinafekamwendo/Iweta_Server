@@ -1,6 +1,6 @@
 const express = require("express");
 const kholaRouter = express.Router();
-const {Khola: Kholas,Users } = require("../../models");
+const {Khola: Kholas,Users,UserLivestock:UserLivestocks } = require("../../models");
 const { validateToken } = require("../../../middlewares/AuthMiddleware");
 
 kholaRouter.get("/khola/All", async (req, res) => {
@@ -39,6 +39,13 @@ kholaRouter.get("/khola/ByUserId/:id", async (req, res) => {
 
 kholaRouter.post("/khola/create", validateToken, async (req, res) => {
   const { KholaName,Location,Animal,Number} = req.body;
+  
+  // const userId=req.user.id;
+  // const kholaId=khola.UserId;
+  // console.log(userId);
+  // const number= await UserLivestocks.findAll({where:{kholaId:userId}});
+  // const total=number.length;
+  // console.log(`number of animals in ${userId} is ${total}`);
 
   const duplicateKhola = await Kholas.findOne({ where: { KholaName:KholaName,Location:Location,Animal:Animal}});
 
@@ -48,6 +55,7 @@ kholaRouter.post("/khola/create", validateToken, async (req, res) => {
   try {
     const khola = req.body;
   khola.username = req.user.username;
+  // khola.Number=total;
   khola.UserId = req.user.id;
     await Kholas.create(khola);
   res.status(200).json(khola);

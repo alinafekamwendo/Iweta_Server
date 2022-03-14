@@ -1,0 +1,47 @@
+[
+    {
+        "id":1,
+        "NameOfDisease":"Swine Fever",
+        "Vaccine":"FD Lapinized",
+        "FirstDose":"25-30 days",
+        "Booster":"1 month after",
+        "Subsequent":6,
+        "Dosage":2
+    },
+    {
+        "id":2,
+        "NameOfDisease":"Foot and Mouth",
+        "Vaccine":"Raksha-ovac",
+        "FirstDose":"42 days",
+        "Booster":"1 month after",
+        "Subsequent":6,
+        "Dosage":1
+    },
+    {
+        "id":3,
+        "NameOfDisease":"Haemorrhagic seppticaemia",
+        "Vaccine":"Rakshatts",
+        "FirstDose":"2 months",
+        "Booster":"1 month after",
+        "Subsequent":12,
+        "Dosage":1
+    },
+    {
+        "id":4,
+        "NameOfDisease":"Tuberclosis",
+        "Vaccine":"B.C.G",
+        "FirstDose":"6 months",
+        "Booster":"-",
+        "Subsequent":24,
+        "Dosage":1
+    },
+    {
+        "id":5,
+        "NameOfDisease":"Hog Cholera",
+        "Vaccine":"Crystal Violet",
+        "FirstDose":"Afrter weaning",
+        "Booster":"-",
+        "Subsequent":12,
+        "Dosage":2
+    }
+]

@@ -18,13 +18,12 @@ ussd.use(express.urlencoded({extended:true}));
 
 ussd.post('*', (req, res,next) => {
 
-const phoneNumber=req.body.phoneNumber;
-const serviceCode=req.body.serviceCode;
-const text=req.body.text;
-const sessionId=req.body.sessionId;
-const networkCode=req.body.networkCode;
   try {
-    let {sessionId, serviceCode, phoneNumber, text} = req.body
+    let {sessionId,
+       serviceCode, 
+       phoneNumber, 
+       text} = req.body
+
     if (text == '') {
       console.log(req.body);
       // This is the first request. Note how we start the response with CON
@@ -69,7 +68,13 @@ const networkCode=req.body.networkCode;
       3.Matawale`
       res.send(response)
       console.log(`choosing khola text ${text}`);
-    } else {
+    } else if(text=='1*2*1'){
+      let response=`END thank you 
+      you chose  lilongwe`
+    }
+    
+    
+    else {
      // console.log(text);
       res.status(400).send('Bad request!')
     }

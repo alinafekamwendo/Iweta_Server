@@ -1,6 +1,6 @@
 
 const express = require("express");
-const ussd = express();
+const ussd = express.Router();
 const cors = require("cors");
 const swaggerUI=require("swagger-ui-express");
 const YAML=require('yamljs');
@@ -8,7 +8,6 @@ const bodyPrser=require('body-parser');
 const swaggerJSDocs=YAML.load("./swagger.yaml");
 const logger = require('morgan');
 const dotenv=require("dotenv").config();
-const dairy=require("./src/models/DairyData.json");
 
 ussd.use(express.json());
 ussd.use(cors());
@@ -18,6 +17,12 @@ ussd.use(logger('dev'))
 ussd.use(express.urlencoded({extended:true}));
 
 ussd.post('*', (req, res,next) => {
+
+const phoneNumber=req.body.phoneNumber;
+const serviceCode=req.body.serviceCode;
+const text=req.body.text;
+const sessionId=req.body.sessionId;
+const networkCode=req.body.networkCode;
   try {
     let {sessionId, serviceCode, phoneNumber, text} = req.body
     if (text == '') {
@@ -74,4 +79,10 @@ ussd.post('*', (req, res,next) => {
    
   })
 
-  export default ussd;
+  ussd.get("/ussd/get", async(req,res,next)=>{
+    res.send("ussd route reached");
+});
+
+
+
+  module.exports= ussd;

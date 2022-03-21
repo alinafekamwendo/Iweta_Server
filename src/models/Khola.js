@@ -22,6 +22,11 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     }
   });
+  Khola.associate=(models)=>{
+    Khola.hasMany(models.DailyRecordings,{
+      onDelete:"cascade",
+    });
+  };
 
   return Khola;
 };

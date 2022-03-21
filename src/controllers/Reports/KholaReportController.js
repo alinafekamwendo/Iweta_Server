@@ -44,13 +44,23 @@ KholaReportController.get('/sms',(req,res,next)=>{
 });
 //generating report
 KholaReportController.get("/khola/report/vaccination/:id",async (req, res,next) => {
-    try {
+
    
     const kholaId=req.params.id;
 
     //derived variables
     const khola=await Kholas.findOne({where:{id:kholaId}});
-    const vaccines=await CattleVaccinationData.findAll();
+    const beefVaccines=await CattleVaccinationData.findAll(
+        {where:{
+            Breed:"Beef"
+        }}
+    );
+    const dairyVaccines=await CattleVaccinationData.findAll(
+        {where:{
+            Breed:"Dairy"
+        }}
+    );
+    const pigVaccines=await PigsVaccinationData.findAll();
     //variables
     const numberOfAnimals=khola.Number;
     const kholaName=khola.KholaName;
@@ -60,6 +70,7 @@ KholaReportController.get("/khola/report/vaccination/:id",async (req, res,next) 
     const breed=anaimalBreed.toLowerCase();
     const location=khola.Location;
     const created=khola.createdAt;
+    const updated=khola.updatedAt;
     //testing
     console.log("khola created on :",created);
     console.log("khola name :",kholaName);
@@ -87,7 +98,7 @@ KholaReportController.get("/khola/report/vaccination/:id",async (req, res,next) 
         ].join('/');
       }
       
-      // 👇️ 24/10/2021 (mm/dd/yyyy)
+      // 👇️  (mm/dd/yyyy)
      const sixthMoth=formatDate(sixMonthsLater);
      const thirdMoth=formatDate(threeMonthsLater);
 
@@ -102,112 +113,276 @@ KholaReportController.get("/khola/report/vaccination/:id",async (req, res,next) 
 
     return monthDiff;
 }
-  
 
-   let finalReport=[];
+
+function getNumberOfDays(start, end) {
+    const startDate = new Date(start);
+    const endDate = new Date(end);
+
+    const dayDiff = endDate.getDay() - startDate.getDay() +
+    (12 * (endDate.getFullYear() - startDate.getFullYear()));
+
+    return dayDiff;
+}
+
+let finalReport=[];
+try{
+   
     //number of months
-     const numberOfmonths=getNumberOfMonths(new Date("October 14,2021"), new Date());
-     console.log(`number of months is ${numberOfmonths}`);
+     const numberOfmonths=getNumberOfMonths(created, new Date());
+     const numberOfDays=getNumberOfDays(new Date("October 14,2021"), new Date());
 
-     vaccines.forEach(element => {
-         if(typeOfAnimal==="cattle"){
-            if(numberOfmonths<3){
-                const totalDosage=element.Dosage*numberOfAnimals;
-                if(element.AgeOfVaccination===">3"){
+     console.log(`number of months is ${numberOfmonths}`);
+     switch (typeOfAnimal) {
+        case "cattle":{
+            if(breed==="beef"){
+                    try {
+                        beefVaccines.forEach(element => {
+                            if(numberOfmonths<3){
+                                const totalDosage=element.Dosage*numberOfAnimals;
+                                if(element.AgeOfVaccination==="3"){
+                                    finalReport.push({
+                                        "Type":element.TypeOfVaccine,
+                                        "Breed":element.Breed,
+                                        "Ageofvaccine":element.AgeOfVaccination,
+                                        "Dosage":element.Dosage,
+                                        "Total_Dosage":totalDosage,
+                                        "EffectiveAfter":element.EffectiveAfter,
+                                        "Duration":element.Duration,
+                                        "Revaccination":element.Revaccination,
+                                        "Next_Vaccination_Day":thirdMoth,
+                                        "status":"pending"
+                            
+                                    });
+                                }else if(element.AgeOfVaccination==="6"){
+                                    finalReport.push({
+                                        "Type":element.TypeOfVaccine,
+                                        "Breed":element.Breed,
+                                        "Ageofvaccine":element.AgeOfVaccination,
+                                        "Dosage":element.Dosage,
+                                        "Total_Dosage":totalDosage,
+                                        "EffectiveAfter":element.EffectiveAfter,
+                                        "Duration":element.Duration,
+                                        "Revaccination":element.Revaccination,
+                                        "Next_Vaccination_Day":sixthMoth,
+                                        "status":"pending"
+                            
+                                    });
+                                }
+                             }else if(numberOfmonths>3 && numberOfmonths<6){
+                                 if(element.AgeOfVaccination==="3"){
+                                     const totalDosage=element.Dosage*numberOfAnimals;
+                                    finalReport.push({
+                                        "Type":element.TypeOfVaccine,
+                                        "Breed":element.Breed,
+                                        "Ageofvaccine":element.AgeOfVaccination,
+                                        "Dosage":element.Dosage,
+                                        "Total_Dosage":totalDosage,
+                                        "EffectiveAfter":element.EffectiveAfter,
+                                        "Duration":element.Duration,
+                                        "Revaccination":element.Revaccination,
+                                        "Next_Vaccination_Day":thirdMoth,
+                                        "status":"Missing vaccination"
+                                    });
+                                 }
+                                 if(element.AgeOfVaccination==="6"){
+                                    const totalDosage=element.Dosage*numberOfAnimals;
+                                    finalReport.push({
+                                        "Type":element.TypeOfVaccine,
+                                        "Breed":element.Breed,
+                                        "Ageofvaccine":element.AgeOfVaccination,
+                                        "Dosage":element.Dosage,
+                                        "Total_Dosage":totalDosage,
+                                        "EffectiveAfter":element.EffectiveAfter,
+                                        "Duration":element.Duration,
+                                        "Revaccination":element.Revaccination,
+                                        "Next_Vaccination_Day":sixthMoth,
+                                        "status":"pending"
+                                    });
+                                 }
+                    
+                             }else{
+                                const totalDosage=element.Dosage*numberOfAnimals;
+                                finalReport.push({
+                                    "Type":element.TypeOfVaccine,
+                                    "Breed":element.Breed,
+                                    "Ageofvaccine":element.AgeOfVaccination,
+                                    "Dosage":element.Dosage,
+                                    "Total_Dosage":totalDosage,
+                                    "EffectiveAfter":element.EffectiveAfter,
+                                    "Duration":element.Duration,
+                                    "Revaccination":element.Revaccination,
+                                    "Next_Vaccination_Day":sixthMoth,
+                                    "status":"Missing"
+                                });
+                            }
+                        });
+        
+                    } catch (error) {
+                        
+                    }
+                }else if(breed==="dairy"){
+                          try {
+                        dairyVaccines.forEach(element => {
+                            if(numberOfmonths<3){
+                                const totalDosage=element.Dosage*numberOfAnimals;
+                                if(element.AgeOfVaccination==="3"){
+                                    finalReport.push({
+                                        "Type":element.TypeOfVaccine,
+                                        "Breed":element.Breed,
+                                        "Ageofvaccine":element.AgeOfVaccination,
+                                        "Dosage":element.Dosage,
+                                        "Total_Dosage":totalDosage,
+                                        "EffectiveAfter":element.EffectiveAfter,
+                                        "Duration":element.Duration,
+                                        "Revaccination":element.Revaccination,
+                                        "Next_Vaccination_Day":thirdMoth,
+                                        "status":"pending"
+                            
+                                    });
+                                }else if(element.AgeOfVaccination==="6"){
+                                    finalReport.push({
+                                        "Type":element.TypeOfVaccine,
+                                        "Breed":element.Breed,
+                                        "Ageofvaccine":element.AgeOfVaccination,
+                                        "Dosage":element.Dosage,
+                                        "Total_Dosage":totalDosage,
+                                        "EffectiveAfter":element.EffectiveAfter,
+                                        "Duration":element.Duration,
+                                        "Revaccination":element.Revaccination,
+                                        "Next_Vaccination_Day":sixthMoth,
+                                        "status":"pending"
+                            
+                                    });
+                                }
+                             }else if(numberOfmonths>3 && numberOfmonths<6){
+                                 if(element.AgeOfVaccination==="3"){
+                                     const totalDosage=element.Dosage*numberOfAnimals;
+                                    finalReport.push({
+                                        "Type":element.TypeOfVaccine,
+                                        "Breed":element.Breed,
+                                        "Ageofvaccine":element.AgeOfVaccination,
+                                        "Dosage":element.Dosage,
+                                        "Total_Dosage":totalDosage,
+                                        "EffectiveAfter":element.EffectiveAfter,
+                                        "Duration":element.Duration,
+                                        "Revaccination":element.Revaccination,
+                                        "Next_Vaccination_Day":thirdMoth,
+                                        "status":"Missing vaccination"
+                                    });
+                                 }
+                                 if(element.AgeOfVaccination==="6"){
+                                    const totalDosage=element.Dosage*numberOfAnimals;
+                                    finalReport.push({
+                                        "Type":element.TypeOfVaccine,
+                                        "Breed":element.Breed,
+                                        "Ageofvaccine":element.AgeOfVaccination,
+                                        "Dosage":element.Dosage,
+                                        "Total_Dosage":totalDosage,
+                                        "EffectiveAfter":element.EffectiveAfter,
+                                        "Duration":element.Duration,
+                                        "Revaccination":element.Revaccination,
+                                        "Next_Vaccination_Day":sixthMoth,
+                                        "status":"pending"
+                                    });
+                                 }
+                    
+                             }else{
+                                const totalDosage=element.Dosage*numberOfAnimals;
+                                finalReport.push({
+                                    "Type":element.TypeOfVaccine,
+                                    "Breed":element.Breed,
+                                    "Ageofvaccine":element.AgeOfVaccination,
+                                    "Dosage":element.Dosage,
+                                    "Total_Dosage":totalDosage,
+                                    "EffectiveAfter":element.EffectiveAfter,
+                                    "Duration":element.Duration,
+                                    "Revaccination":element.Revaccination,
+                                    "Next_Vaccination_Day":sixthMoth,
+                                    "status":"Missing"
+                                });
+                            }
+                        });
+        
+                    } catch (error) {
+                        
+                    }
+                }
+                else{
                     finalReport.push({
-                        "Type":element.TypeOfVaccine,
-                        "Breed":element.Breed,
-                        "Ageofvaccine":element.AgeOfVaccination,
-                        "Dosage":element.Dosage,
-                        "Total_Dosage":totalDosage,
-                        "EffectiveAfter":element.EffectiveAfter,
-                        "Duration":element.Duration,
-                        "Revaccination":element.Revaccination,
-                        "Next_Vaccination_Day":thirdMoth,
-                        "status":"pending"
-            
-                    });
-                }else if(element.AgeOfVaccination===">6"){
-                    finalReport.push({
-                        "Type":element.TypeOfVaccine,
-                        "Breed":element.Breed,
-                        "Ageofvaccine":element.AgeOfVaccination,
-                        "Dosage":element.Dosage,
-                        "Total_Dosage":totalDosage,
-                        "EffectiveAfter":element.EffectiveAfter,
-                        "Duration":element.Duration,
-                        "Revaccination":element.Revaccination,
-                        "Next_Vaccination_Day":sixthMoth,
-                        "status":"pending"
-            
+                        "Type":"",
+                        "Breed":"",
+                        "Ageofvaccine":"",
+                        "Dosage":"",
+                        "Total_Dosage":"",
+                        "EffectiveAfter":"",
+                        "Duration":"",
+                        "Revaccination":"",
+                        "Next_Vaccination_Day":"",
+                        "status":"invalid"
                     });
                 }
-             }else if(numberOfmonths>3 && numberOfmonths<6){
-                 if(element.AgeOfVaccination===">3"){
-                     const totalDosage=element.Dosage*numberOfAnimals;
-                    finalReport.push({
-                        "Type":element.TypeOfVaccine,
-                        "Breed":element.Breed,
-                        "Ageofvaccine":element.AgeOfVaccination,
-                        "Dosage":element.Dosage,
-                        "Total_Dosage":totalDosage,
-                        "EffectiveAfter":element.EffectiveAfter,
-                        "Duration":element.Duration,
-                        "Revaccination":element.Revaccination,
-                        "Next_Vaccination_Day":thirdMoth,
-                        "status":"Missing vaccination"
-                    });
-                 }
-                 if(element.AgeOfVaccination===">6"){
-                    const totalDosage=element.Dosage*numberOfAnimals;
-                    finalReport.push({
-                        "Type":element.TypeOfVaccine,
-                        "Breed":element.Breed,
-                        "Ageofvaccine":element.AgeOfVaccination,
-                        "Dosage":element.Dosage,
-                        "Total_Dosage":totalDosage,
-                        "EffectiveAfter":element.EffectiveAfter,
-                        "Duration":element.Duration,
-                        "Revaccination":element.Revaccination,
-                        "Next_Vaccination_Day":sixthMoth,
-                        "status":"pending"
-                    });
-                 }
-    
-             }else{
-                const totalDosage=element.Dosage*numberOfAnimals;
-                finalReport.push({
-                    "Type":element.TypeOfVaccine,
-                    "Breed":element.Breed,
-                    "Ageofvaccine":element.AgeOfVaccination,
-                    "Dosage":element.Dosage,
-                    "Total_Dosage":totalDosage,
-                    "EffectiveAfter":element.EffectiveAfter,
-                    "Duration":element.Duration,
-                    "Revaccination":element.Revaccination,
-                    "Next_Vaccination_Day":sixthMoth,
-                    "status":"Missing"
-                });
-               
-             }
-         }else if(typeOfAnimal==="pig"){
-            const totalDosage=element.Dosage*numberOfAnimals;
+        }
+        break;
+        case "pig":{
+            try {
+             pigVaccines.forEach(element => {
+             const totalDosage=element.Dosage*numberOfAnimals;
+             if(numberOfDays<element.FirstDose){
+
+             
             finalReport.push({
-                "Type":element.TypeOfVaccine,
+                "Type":element.Vaccine,
                 "Breed":"Pigs",
-                "Ageofvaccine":element.AgeOfVaccination,
+                "Ageofvaccine":element.FirstDose,
                 "Dosage":element.Dosage,
                 "Total_Dosage":totalDosage,
-                "EffectiveAfter":element.EffectiveAfter,
-                "Duration":element.Duration,
-                "Revaccination":element.Revaccination,
+                "EffectiveAfter":"",
+                "Duration":element.Booster,
+                "Revaccination":element.Subsequent,
                 "Next_Vaccination_Day":sixthMoth,
-                "status":"Missing"
-         });
+                "status":"pending"
+            });
+        }else if(numberOfDays>element.FirstDose){
+               
+            finalReport.push({
+                "Type":element.Vaccine,
+                "Breed":"Pigs",
+                "Ageofvaccine":element.FirstDose,
+                "Dosage":element.Dosage,
+                "Total_Dosage":totalDosage,
+                "EffectiveAfter":"",
+                "Duration":element.Booster,
+                "Revaccination":element.Subsequent,
+                "Next_Vaccination_Day":sixthMoth,
+                "status":"missing"
+            });
         }
-        
-     });
- 
+        });
+            } catch (error) {
+                
+            }
+          
+        }
+        break;
+         
+        default:{
+            finalReport.push({
+                "Type":"",
+                "Breed":"",
+                "Ageofvaccine":"",
+                "Dosage":"",
+                "Total_Dosage":"",
+                "EffectiveAfter":"",
+                "Duration":"",
+                "Revaccination":"",
+                "Next_Vaccination_Day":"",
+                "status":"invalid"
+            });
+        }
+    
+      };
+     
      res.status(200).json(finalReport);
      //whatsapp
 
@@ -216,6 +391,7 @@ KholaReportController.get("/khola/report/vaccination/:id",async (req, res,next) 
         next(error);
     }
   });
+
 
   KholaReportController.get("/khola/report/feeding/:id",async (req,res,next)=>{
 try {

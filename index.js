@@ -46,7 +46,7 @@ const Products=require("./src/routes/Product");
 app.use('/',Products);
 //ussd
 const ussd=require("./src/routes/Ussd");
-app.use("/",ussd);
+app.use("/ussd",ussd);
 
 //for khola report
 //whole route is localhost:3001/khola/report/vaccination/:id
@@ -62,8 +62,6 @@ app.use("/",kholaReports);
 app.get('/',(req,res)=>{
 
   res.send("IWETA SERVER RUNNING");
-  console.log(role);
-  console.log(Roles);
 });
 
 //populate roles

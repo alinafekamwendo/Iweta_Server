@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull:false,
       },
       FirstDose:{
-        type:DataTypes.STRING,
+        type:DataTypes.BIGINT,
         allowNull:false,
       },
       Booster:{

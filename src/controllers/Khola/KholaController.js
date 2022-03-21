@@ -92,7 +92,7 @@ KholaController.post("/khola/create/:id",validateToken, async (req, res,next) =>
   //variables
    
   const id=req.params.id;
-  const {KholaName,Location,AnimalType,Breed,Number}=req.body;
+  const {KholaName,Location,AnimalType,Breed,Number,DateOfBirth}=req.body;
   const animal=AnimalType.toLowerCase();
 
 //functions populate  vaccine data
@@ -141,6 +141,7 @@ const khola = req.body;
       try {
         khola.username=req.user.username;
         khola.UserId=id;
+        khola.createdAt=DateOfBirth;
              await Khola.create(khola);
       res.status(200).json(khola);
       

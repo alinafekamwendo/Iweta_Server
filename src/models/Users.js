@@ -39,9 +39,6 @@ module.exports = (sequelize, DataTypes) => {
       onDelete: "cascade",
     });
  
-    Users.hasMany(models.Livestock,{
-      onDelete:"cascade",
-    });
     Users.hasMany(models.Product,{
       onDelete:"cascade",
     });

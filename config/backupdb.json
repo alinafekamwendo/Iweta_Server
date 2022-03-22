@@ -1,0 +1,53 @@
+{
+    "development": {
+      "username": "root",
+      "password": "",
+      "database": "alis",
+      "host": "localhost",
+      "dialect": "mysql"
+    },
+    "test": {
+      "username": "root",
+      "password": null,
+      "database": "database_test",
+      "host": "127.0.0.1",
+      "dialect": "mysql"
+    },
+    "production": {
+      "username": "root",
+      "password": null,
+      "database": "database_production",
+      "host": "127.0.0.1",
+      "dialect": "mysql"
+    }
+  }
+cpanel mysql
+dbname=b6_31299142_alis
+db username:	b6_31299142
+passw:WKFDPA4S@0993925060
+host:sql209.byethost6.com  
+
+
+{
+  "development": {
+    "username": "alinafekamwendo",
+    "password": "1517",
+    "database": "alis",
+    "host": "localhost",
+    "dialect": "postgres"
+  },
+  "test": {
+    "username": "alinafekamwendo",
+    "password": "1517",
+    "database": "alis",
+    "host": "localhost",
+    "dialect": "postgres"
+  },
+  "production": {
+    "username": "alinafekamwendo",
+    "password": "1517",
+    "database": "alis",
+    "host": "localhost",
+    "dialect": "postgres"
+}
+}

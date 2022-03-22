@@ -1,6 +1,6 @@
 // config.js
 require('dotenv').config();
-const {DB, DB_HOST, DB_USERNAME, DB_PASSWORD } = process.env;
+const {DB, DB_HOST, DB_USERNAME, DB_PASSWORD ,DATABASE_URL} = process.env;
 module.exports=
 {  
   "development": {

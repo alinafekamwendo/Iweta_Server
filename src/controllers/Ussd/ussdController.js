@@ -8,7 +8,7 @@ const bodyPrser=require('body-parser');
 const swaggerJSDocs=YAML.load("./swagger.yaml");
 const logger = require('morgan');
 const dotenv=require("dotenv").config();
-const {Users}=require("../../models")
+const {Users,Khola}=require("../../models")
 //const dairy=require("./src/models/DairyData.json");
 
 ussdController.use(express.json());
@@ -31,19 +31,25 @@ ussdController.post('/', async (req, res,next) => {
     phoneNumber, 
     text} = req.body
     let response;
+    let incoming;
 if(text==="")
 {
  response='CON Enter your username'
 }
 if(text!=="")
 {
- let incoming=text.split('*');
+  incoming=text.split('*');
  console.log(incoming.length);
   if(incoming.length===1){
   response='CON enter your password'
   }else if(incoming.length>1){
       if(parseInt(incoming[1])>0){
-        response='END your username is '+incoming[0]+'\n Your password is '+incoming[1]
+        const password=parseInt(incoming[1]);
+        const  username=incoming[0];
+        //const user=await Users.findOne({where:{username:username,id:password},attributes: ['id', ['username', 'role']]});
+        const khola=await Khola.findAll({where:{UserId:password}});
+        console.log(khola);
+        response='END your username is '+username+'\n Your password is '+password
       }
   }else{
     response='END error';
@@ -54,7 +60,7 @@ if(text!=="")
 }
 
 setTimeout(()=>{
-  console.log(text);
+  console.log(`incoming status ${incoming}`);
   res.send(response);
   res.end();
 },2000);

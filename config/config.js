@@ -26,8 +26,6 @@ module.exports=
     "database": DB,
     "host": DB_HOST,
     "dialect": "postgres",
-    "dialectOptions":{
-      "ssl":true
-    }
+   "ssl":"true"
   },
 }

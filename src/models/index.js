@@ -5,7 +5,7 @@ require('dotenv').config();
 const path = require('path');
 const Sequelize = require('sequelize');
 const basename = path.basename(__filename);
-const env = process.env.NODE_ENV || 'development';
+const env = process.env.NODE_ENV || 'production';
 
 const config = require(path.join(__dirname, '../../', 'config', 'config.json'))[env];
 

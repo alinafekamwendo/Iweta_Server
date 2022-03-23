@@ -39,8 +39,8 @@ app.use("/api/livestock",livestockRouter);
 const kholaRoute=require("./src/routes/Khola");
 app.use("/",kholaRoute);
 //notifications
-const pushNotifications=require("./src/routes/PushNotificationsRoute");
-app.use("/notifications",pushNotifications);
+// const pushNotifications=require("./src/routes/PushNotificationsRoute");
+// app.use("/notifications",pushNotifications);
 //
 const Products=require("./src/routes/Product");
 app.use('/',Products);
@@ -85,11 +85,8 @@ app.use((error,req,res,next)=>{
   next(error);
 });
 const   PORT=process.env.PORT||5000;
-// db.sequelize.sync().then(() => {
-//   app.listen(PORT, () => {
-//     console.log(`Server running on port http://localhost:${PORT}`);
-//   });
-// });
-app.listen(PORT, () => {
-  console.log(`Server running on port http://localhost:${PORT}`);
+db.sequelize.sync().then(() => {
+  app.listen(PORT, () => {
+    console.log(`Server running on port http://localhost:${PORT}`);
+  });
 });

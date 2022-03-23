@@ -39,8 +39,8 @@ app.use("/api/livestock",livestockRouter);
 const kholaRoute=require("./src/routes/Khola");
 app.use("/",kholaRoute);
 //notifications
-// const pushNotifications=require("./src/routes/PushNotificationsRoute");
-// app.use("/notifications",pushNotifications);
+const pushNotifications=require("./src/routes/PushNotificationsRoute");
+app.use("/notifications",pushNotifications);
 //
 const Products=require("./src/routes/Product");
 app.use('/',Products);

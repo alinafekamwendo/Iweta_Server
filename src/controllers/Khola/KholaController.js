@@ -25,9 +25,9 @@ const makola = await Khola.findAll();
 try {
   feeding.map((element) => {
     const id=element.id;
-    const populated= FeedingData.findAll({where:{id:id}});
+    const populated= await  FeedingData.findAll({where:{id:id}});
   if(!populated){
-    FeedingData.destroy(element)&&FeedingData.create(element);
+    FeedingData.destroy(element)&&CattleVaccinationData.create(element);
     console.log("created");
   }else if(populated){
   FeedingData.destroy({where:{

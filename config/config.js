@@ -1,7 +1,7 @@
 // config.js
 
 require('dotenv').config();
-const {DB, DB_HOST, DB_USERNAME, DB_PASSWORD,DATABASE_URL } = process.env;
+const {DB, DB_HOST, DB_USERNAME, DB_PASSWORD} = process.env;
 module.exports=
 {
   "development": {
@@ -27,7 +27,7 @@ module.exports=
     "host": DB_HOST,
     "dialect": "postgres",
     "dialectOptions":{
-      "ssl":false
+      "ssl":true
     }
   },
 }

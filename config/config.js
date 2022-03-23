@@ -19,10 +19,8 @@ module.exports=
     "dialect": "postgres"
   },
   "production": {
-    "username": DB_USERNAME,
-    "password": DB_PASSWORD,
-    "database": DB,
-    "host": DB_HOST,
-    "dialect": "postgres"
-}
+    "use_env_variable": "DATABASE_URL",
+    "dialect": "postgres",
+    "operatorsAliases": false
+  }
 }

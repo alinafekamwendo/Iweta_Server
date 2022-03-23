@@ -14,10 +14,8 @@
     "dialect": "mysql"
   },
   "production": {
-    "username": "alinafekamwendo",
-    "password": "00000000",
-    "database": "iweta_database",
-    "host": "db4free.net",
-    "dialect": "mysql"
+    "use_env_variable": "DATABASE_URL",
+    "dialect": "postgres",
+    "operatorsAliases": false
   }
 }

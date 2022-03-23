@@ -9,7 +9,7 @@ const { Server } = require("socket.io");
 
 const io = new Server({
   cors: {
-    origin: "https://iweta.vercel.app/notifications",
+    origin: "https://iweta.vercel.app",
   },
 });
 
@@ -55,7 +55,7 @@ io.on("connection", (socket) => {
   });
 });
 
-io.listen(3002)
+io.listen("https://serveriweta.herokuapp.com/notifications")
 KholaReportController.get("/",(req,res,next)=>{
     try {
         //nodeCron.schedule('* * * * *', function() {

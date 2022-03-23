@@ -54,8 +54,6 @@ io.on("connection", (socket) => {
     removeUser(socket.id);
   });
 });
-
-io.listen("https://serveriweta.herokuapp.com/notifications")
 KholaReportController.get("/",(req,res,next)=>{
     try {
         //nodeCron.schedule('* * * * *', function() {

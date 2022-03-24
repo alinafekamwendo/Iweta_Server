@@ -20,7 +20,7 @@ const products = await Products.findAll();
 
 });
 
- ProductController.get("/product/bySupplier/:SupplierId", validateToken, async (req, res,next) => {
+ ProductController.get("/product/bySupplier/:SupplierId", async (req, res,next) => {
 try {
  
   const id = req.params.SupplierId;

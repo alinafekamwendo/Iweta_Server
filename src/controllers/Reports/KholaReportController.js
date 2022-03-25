@@ -82,7 +82,7 @@ KholaReportController.get("/khola/report/vaccination/:id",async (req, res,next) 
     var threeMonthsLater = new Date(created);
             threeMonthsLater.setMonth(threeMonthsLater.getMonth() + 3);
     //six months later
-    var sixMonthsLater = new Date();
+    var sixMonthsLater = new Date(created);
             sixMonthsLater.setMonth(sixMonthsLater.getMonth() + 6);
     //formatting
     function padTo2Digits(num) {
@@ -96,10 +96,6 @@ KholaReportController.get("/khola/report/vaccination/:id",async (req, res,next) 
           date.getFullYear(),
         ].join('/');
       }
-      
-      // 👇️  (mm/dd/yyyy)
-     const sixthMoth=formatDate(sixMonthsLater);
-     const thirdMoth=formatDate(threeMonthsLater);
 
 
        //function to return number of months collapsed
@@ -123,7 +119,9 @@ function getNumberOfDays(start, end) {
 
     return dayDiff;
 }
-
+ // 👇️  (mm/dd/yyyy)
+ const sixthMoth=formatDate(sixMonthsLater);
+ const thirdMoth=formatDate(threeMonthsLater);
 let finalReport=[];
 try{
    

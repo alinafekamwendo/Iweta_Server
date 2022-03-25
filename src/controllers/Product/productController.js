@@ -55,12 +55,15 @@ ProductController.post("/product/create/:id",validateToken, async (req, res,next
   try {
     const {Name,Category,Description,Price}=req.body;
     const id=req.params.id;
-    const userInfor=await Users.findOne({ where: {id:id} });
+    const user=await Users.findOne({ where: {id:id} });
+    const supplier=user.username;
+      console.log(`supplier with name ${supplier} `);
     const duplicateProduct=await Products.findOne({where:{Name:Name,Category:Category,UserId:id}});
     if(duplicateProduct){return res.status(409).json("already registered")};
     try {
         const product=req.body;
         product.UserId=id;
+        product.Supplier=user.username;
        await Products.create(product)
             res.status(200).json(product);
             console.log("successful");

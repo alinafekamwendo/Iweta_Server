@@ -22,6 +22,10 @@ module.exports = (sequelize, DataTypes) => {
         type:DataTypes.STRING,
         allowNull:false,
       },
+      Supplier:{
+        type:DataTypes.STRING,
+        allowNull:false,
+      },
      
     });
     return Product;

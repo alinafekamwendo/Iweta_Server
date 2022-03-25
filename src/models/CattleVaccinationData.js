@@ -1,35 +1,39 @@
 module.exports = (sequelize, DataTypes) => {
-    const DailyRecordings = sequelize.define("DailyRecordings", {
-      id:{
+    const CattleVaccinationData = sequelize.define("CattleVaccinationData", {
+        id:{
             type: DataTypes.BIGINT,
             allowNull: false,
              primaryKey: true 
           },
-      Day:{
-            type:DataTypes.STRING,
-            allowNull:false,
-          },
-      Activities:{
+      TypeOfVaccine:{
         type:DataTypes.STRING,
         allowNull:false,
       },
-      Diseases:{
+      Breed:{
         type:DataTypes.STRING,
         allowNull:false,
       },
-      Affected:{
+      AgeOfVaccination:{
+        type:DataTypes.STRING,
+        allowNull:false,
+      },
+      Dosage:{
+        type:DataTypes.DOUBLE,
+        allowNull:false,
+      },
+      EffectiveAfter:{
         type:DataTypes.BIGINT,
         allowNull:false,
       },
-      Costs:{
+      Duration:{
         type:DataTypes.STRING,
         allowNull:false,
       },
-      Comments:{
+      Revaccination:{
         type:DataTypes.STRING,
         allowNull:false,
       },
     });
-    return DailyRecordings;
+    return CattleVaccinationData;
   };
   

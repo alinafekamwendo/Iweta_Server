@@ -64,7 +64,6 @@ ProductController.post("/product/create/:id",validateToken, async (req, res,next
         const product=req.body;
         product.UserId=id;
         product.Supplier=user.username;
-        product.Category=Category;
        await Products.create(product)
             res.status(200).json(product);
             console.log("successful");

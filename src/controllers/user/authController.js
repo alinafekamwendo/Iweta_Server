@@ -97,9 +97,10 @@ registerRouter.post("/auth/login", async (req, res,next) => {
   bcrypt.compare(password, user.password).then(async (match) => {
     if (!match) res.json({ error: "Wrong username And Password Combination" });
 
-    const accessToken = sign(
-      { username:user.username, id: user.id },
-      "importantsecret"
+    const accessToken =sign(
+      { username:user.username,
+         id: user.id },
+      "importantsecret",{expiresIn:'24h'}
     );
     res.status(200).json({ token: accessToken, username:user.username,email:user.email,role:user.role,id: user.id});
   });

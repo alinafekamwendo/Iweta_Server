@@ -1,37 +1,17 @@
 const express = require("express");
-const router = express.Router();
+const CommentsRouter = express.Router();
 const { Comments } = require("../models");
 const { validateToken } = require("../../middlewares/AuthMiddleware");
-const deleteComment=require("../controllers/Comments/DeleteComment.controller");
 
 
-//posting comment route
-//localhost:3001/comments
-const postCommentRouter = require("../controllers/Comments/PostComment.controller");
-router.post('/',postCommentRouter);
 
-//get comment by Id
-// const getCommentController=require("../controllers/Comments/GetComment.controller");
-// router.get('/',getCommentController);
-router.get("/:postId", async (req, res) => {
-  const postId = req.params.postId;
-  const comments = await Comments.findAll({ where: { PostId: postId } });
-  res.json(comments);
-});
+const CommentsController=require("../controllers/Comments/CommentsController");
 
-//delete comment route
-//router.delete('/',deleteComment);
-router.delete("/:commentId", validateToken, async (req, res) => {
-  const commentId = req.params.commentId;
-
-  await Comments.destroy({
-    where: {
-      id: commentId,
-    },
-  });
-
-  res.json("DELETED SUCCESSFULLY");
-});
+CommentsRouter.get('/byPost/:postId',CommentsController);
+CommentsRouter.get('/All',CommentsController);
+CommentsRouter.post('/postComment/:postId',CommentsController);
+CommentsRouter.delete('/delete/:commentId',CommentsController);
+CommentsRouter.put('/updateComment/:commentId',CommentsController);
 
 
-module.exports = router;
+module.exports = CommentsRouter;

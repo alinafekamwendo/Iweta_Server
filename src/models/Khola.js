@@ -26,6 +26,9 @@ module.exports = (sequelize, DataTypes) => {
     Khola.hasMany(models.DailyRecordings,{
       onDelete:"cascade",
     });
+    Khola.hasMany(models.Schedule,{
+      onDelete:"cascade",
+    });
   };
 
   return Khola;

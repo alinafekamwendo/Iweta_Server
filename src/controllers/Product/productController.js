@@ -12,7 +12,6 @@ try {
   
 const products = await Products.findAll();
   res.status(200).json(products);
-  console.log(products)
 
 } catch (error) {
   next(error);

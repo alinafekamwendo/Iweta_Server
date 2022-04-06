@@ -2,6 +2,7 @@
 const express = require("express");
 const ussdController = express();
 const cors = require("cors");
+const axios=require('axios');
 const swaggerUI=require("swagger-ui-express");
 const YAML=require('yamljs');
 const bodyPrser=require('body-parser');
@@ -15,10 +16,6 @@ ussdController.use(express.json());
 ussdController.use(cors());
 ussdController.use(logger('dev'))
 //
-// const str = '01-01-2020';
-
-// // get everything after first dash
-// const slug = str.substring(str.indexOf('-') + 1); // 01-2020
 
 //app.use(bodyPrser.json());
 //app.use(bodyPrser.urlencoded({extended:true}))
@@ -31,19 +28,31 @@ ussdController.post('/', async (req, res,next) => {
     phoneNumber, 
     text} = req.body
     let response;
+    let incoming=text.split('*');
+    console.log(`incoming is ${incoming}`);
 if(text==="")
 {
  response='CON Enter your username'
 }
 if(text!=="")
 {
- let incoming=text.split('*');
+  
  console.log(incoming.length);
   if(incoming.length===1){
   response='CON enter your password'
   }else if(incoming.length>1){
       if(parseInt(incoming[1])>0){
-        response='END your username is '+incoming[0]+'\n Your password is '+incoming[1]
+          const name=incoming[0];
+          const pass=incoming[1];
+   const user= await Users.findAll({where:{username:name,password:pass}}) ;
+          
+        // response='END your username is '+incoming[0]+'\n Your password is '+incoming[1]
+        if(user){
+          response=`END found `
+        }else if(!user){
+          response='END sorry user not found'
+        }
+       
       }
   }else{
     response='END error';
@@ -54,7 +63,7 @@ if(text!=="")
 }
 
 setTimeout(()=>{
-  console.log(text);
+  console.log(incoming);
   res.send(response);
   res.end();
 },2000);

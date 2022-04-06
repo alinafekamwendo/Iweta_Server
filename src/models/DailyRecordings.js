@@ -1,10 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
     const DailyRecordings = sequelize.define("DailyRecordings", {
-      id:{
-            type: DataTypes.BIGINT,
-            allowNull: false,
-             primaryKey: true 
-          },
       Day:{
             type:DataTypes.STRING,
             allowNull:false,
@@ -22,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull:false,
       },
       Costs:{
-        type:DataTypes.STRING,
+        type:DataTypes.DECIMAL,
         allowNull:false,
       },
       Comments:{

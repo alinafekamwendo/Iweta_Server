@@ -48,6 +48,13 @@ app.use('/',Products);
 const ussd=require("./src/routes/Ussd");
 app.use("/ussd",ussd);
 
+//records
+const DailyRecordings=require("./src/routes/DailyRecords");
+app.use('/',DailyRecordings);
+//schedules
+const Schedules=require("./src/routes/Schedule");
+app.use('/',Schedules);
+
 //for khola report
 //whole route is localhost:3001/khola/report/vaccination/:id
 //the id is khola id , you neeed to pass khola id 
@@ -84,7 +91,7 @@ app.use((error,req,res,next)=>{
   });
   next(error);
 });
-const   PORT=process.env.PORT||5000;
+const   PORT=process.env.PORT||3001;
 db.sequelize.sync().then(() => {
   app.listen(PORT, () => {
     console.log(`Server running on port http://localhost:${PORT}`);

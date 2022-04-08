@@ -143,7 +143,7 @@ if(text!=="")
           kholaId,
         );
         if(!khola){
-          response='END Pepani silidapezeke khola la ID imeneyo'
+          response='END SORRY KHOLA NOT FOUND'
         }
       
         //records=DailyRecordings.findAll({where:{Day:today,KholaId:kholaId}});
@@ -155,8 +155,8 @@ if(text!=="")
           location=khola.Location;
           lastUpdate=khola.updatedAt;
           response=`END Summary of khola: ${nameOfKhola}
-              total livestock: ${total},
-              location :${location},
+              Total livestock: ${total},
+              Location :${location},
               updated on: ${lastUpdate}
                 `
         }

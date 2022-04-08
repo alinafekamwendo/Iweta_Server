@@ -309,13 +309,13 @@ try{
                     finalReport.push({
                         "Type":"",
                         "Breed":"",
-                        "Ageofvaccine":"",
-                        "Dosage":"",
-                        "Total_Dosage":"",
-                        "EffectiveAfter":"",
-                        "Duration":"",
-                        "Revaccination":"",
-                        "Next_Vaccination_Day":"",
+                        "Ageofvaccine":"invalid",
+                        "Dosage":"invalid",
+                        "Total_Dosage":"invalid",
+                        "EffectiveAfter":"invalid",
+                        "Duration":"invalid",
+                        "Revaccination":"invalid",
+                        "Next_Vaccination_Day":"invalid",
                         "status":"invalid"
                     });
                 }

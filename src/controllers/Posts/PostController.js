@@ -16,15 +16,14 @@ postRouter.post("/create", validateToken, async (req, res,next) => {
   }
 
   });
-  postRouter.post("/updatePost/:postId", validateToken, async (req, res,next) => {
+  postRouter.put("/updatePost/:postId", validateToken, async (req, res,next) => {
     try {
       const post = req.body;
       const postId=req.params.postId;
-      post.username = req.user.username;
-      post.UserId = req.user.id;
+      
       await Posts.update(post,{
         where:{
-          id:id,
+          id:postId,
         }
       });
       res.status(200).json(post);

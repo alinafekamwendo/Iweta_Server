@@ -90,19 +90,20 @@ registerRouter.put("/auth/update/:id",validateToken, async (req, res,next) => {
 registerRouter.post("/auth/login", async (req, res,next) => {
   try {
     const {username,password } = req.body;
-  const user = await Users.findOne({ where: { username: username } });
+  const user = await Users.findOne({ where: { username: username} });
 
   if (!user) res.status(403).json({ error: "User Doesn't Exist" });
 
   bcrypt.compare(password, user.password).then(async (match) => {
-    if (!match) res.json({ error: "Wrong username And Password Combination" });
+    if (!match) res.json({ error: "Wrong username or password" });
 
     const accessToken =sign(
       { username:user.username,
          id: user.id },
-      "importantsecret",{expiresIn:'24h'}
+      "importantsecret"
+      //,{expiresIn:'24h'}
     );
-    res.status(200).json({ token: accessToken, username:user.username,email:user.email,role:user.role,id: user.id});
+    res.status(200).json({message:"successfull", token: accessToken, username:user.username,email:user.email,role:user.role,id: user.id});
   });
   } catch (error) {
     next(error);
@@ -125,14 +126,14 @@ const basicInfo = await Users.findByPk(id, {
 
 });
 
-registerRouter.get("/auth/users",validateToken, async (req, res,next) => {
+registerRouter.get("/auth/users",async (req, res,next) => {
  try {
 
 
   const allUsers = await Users.findAll({attributes: {exclude: ["password "]}});
 
   
-  res.json({allusers: allUsers});
+  res.json({allUsers});
  } catch (error) {
    next(error);
  }

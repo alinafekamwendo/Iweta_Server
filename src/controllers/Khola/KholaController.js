@@ -1,5 +1,6 @@
 const express = require("express");
 const KholaController = express.Router();
+const cors=require("cors");
 const nodeCron=require('node-cron');
 const {CattleVaccinationData,PigsVaccinationData,FeedingData,Khola } = require("../../models");
 const { validateToken } = require("../../../middlewares/AuthMiddleware");
@@ -29,12 +30,11 @@ try {
   if(!populated){
     FeedingData.destroy(element)&&CattleVaccinationData.create(element);
     console.log("created");
-  }else if(populated){
-  FeedingData.destroy({where:{
-    id:element.id
-  }})&&FeedingData.create(element);
-  console.log("updated");
-}
+  }
+//   if(populated){
+
+//   console.log("feeding populated");
+// }
 });
   const id = req.params.id;
   const makolaById = await Khola.findAll({ where: {UserId: id}});
@@ -49,7 +49,7 @@ try {
  KholaController.get("/khola/ById/:id", async (req, res,next) => {
    try {
     const id = req.params.id;
-    const khola=await Khola.findOne({where:{id:id}});
+    const khola=await Khola.findAll({where:{id:id}});
     if(khola){
      res.status(200).json(khola);
     }else{
@@ -104,28 +104,32 @@ if(animal==="cattle"){
     if(!populated){
       CattleVaccinationData.destroy(element)&&CattleVaccinationData.create(element);
       console.log("created");
-    }else if(populated){
-    CattleVaccinationData.destroy({where:{
-      id:element.id
-    }})&&CattleVaccinationData.create(element);
-    console.log("updated");
-  }
+    }
+  //   if(populated){
+  //   // CattleVaccinationData.destroy({where:{
+  //   //   id:element.id
+  //   // }})&&CattleVaccinationData.create(element);
+  //   // console.log("updated");
+  // }
   });
 
 }else if(animal==="pig"){
     pigsVaccines.map((element) => {
       const id=element.id;
       const populated= PigsVaccinationData.findAll({where:{id:id}});
-    if(populated){
-      PigsVaccinationData.destroy({where:{
-        id:element.id
-      }})&&PigsVaccinationData.create(element);
-      console.log("created");
-    }else if(!populated){
+    // if(populated){
+    //   // PigsVaccinationData.update(element,{
+    //   //   where:{
+    //   //     id:element.id,
+    //   //   }
+    //   // });
+    //   console.log("populated");
+    // }
+    if(!populated){
     PigsVaccinationData.destroy({where:{
       id:element.id
     }})&&PigsVaccinationData.create(element);
-    console.log("updated");
+    console.log("created");
   }
   });
 };
@@ -147,20 +151,23 @@ const khola = req.body;
       
 //the following twilio sends sms as a comfirmation of khola created
 // //sms code starts here
-// var sid=process.env.SID;
-//  var authToken=process.env.AUTH_TOKEN;
-//   var twilio=require('twilio')(sid,authToken);
-//   twilio.messages
-//   .create({
-//     from:'+17622139696',
-//     to: '+265993925060',
-//     body: `You have succesfully created khola.Name: ${KholaName},
-//      Type: ${AnimalType}, 
-//      Total Animals: ${Number}`,
-//   })
-//   .then((res)=>{console.log("message sent")})
-//   .catch((err)=>{console.log(err)});
-//   //sms code ends here
+var sid='AC620d0fc432d070e8cceb32655ed60c6c';
+//||process.env.SID;
+ var authToken='5c3eec4cd34a1b7a7f1cea6a12a3191d';
+ //||process.env.AUTH_TOKEN;
+  var twilio=require('twilio')(sid,authToken);
+  twilio.messages
+  .create({
+    from:'+16672269487',
+    to: '+265881814628',
+    body: `You have succesfully created khola.Name: ${KholaName},
+     Type: ${AnimalType}, 
+     Total Animals: ${Number}`,
+  })
+  .then((res)=>{console.log("message sent")})
+  .catch((err)=>{
+    console.log(err)});
+  //sms code ends here
  
       } catch (error) {
         

@@ -33,7 +33,7 @@ try {
  ScheduleController.get("/schedules/byId/:id", async (req, res,next) => {
    try {
     const id = req.params.id;
-    const schedule=await Schedules.findOne({where:{id:id}});
+    const schedule=await Schedules.findByPk(id);
     if(schedule){
      res.status(200).json(schedule);
     }else{

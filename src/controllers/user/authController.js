@@ -133,7 +133,7 @@ registerRouter.get("/auth/users",async (req, res,next) => {
   const allUsers = await Users.findAll({attributes: {exclude: ["password "]}});
 
   
-  res.json({allUsers});
+  res.status(200).json(allUsers);
  } catch (error) {
    next(error);
  }

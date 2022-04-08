@@ -151,9 +151,9 @@ const khola = req.body;
       
 //the following twilio sends sms as a comfirmation of khola created
 // //sms code starts here
-var sid='AC620d0fc432d070e8cceb32655ed60c6c';
+var sid='';
 //||process.env.SID;
- var authToken='5c3eec4cd34a1b7a7f1cea6a12a3191d';
+ var authToken='';
  //||process.env.AUTH_TOKEN;
   var twilio=require('twilio')(sid,authToken);
   twilio.messages

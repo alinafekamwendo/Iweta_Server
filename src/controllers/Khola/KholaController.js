@@ -28,11 +28,14 @@ try {
     const id=element.id;
     const populated= FeedingData.findAll({where:{id:id}});
   if(!populated){
-    FeedingData.destroy(element)&&CattleVaccinationData.create(element);
+    FeedingData.destroy({
+      where:{id:id}
+    })&&FeedingData.create(element);
     console.log("created");
   }
    if(populated){
-  FeedingData.destroy(element)&&CattleVaccinationData.create(element);
+  FeedingData.destroy(
+   {where:{id:id}})&&FeedingData.create(element);
 //   console.log("feeding populated");
  }
 });

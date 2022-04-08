@@ -26,16 +26,13 @@ const makola = await Khola.findAll();
 try {
   feeding.map((element) => {
     const id=element.id;
-    const populated= FeedingData.findAll({where:{id:id}});
+    const populated= FeedingData.findOne({where:{id:id}});
   if(!populated){
-    FeedingData.destroy({
-      where:{id:id}
-    })&&FeedingData.create(element);
+    FeedingData.destroy({where:{id:element.id}})&&FeedingData.create(element);
     console.log("created");
   }
    if(populated){
-  FeedingData.destroy(
-   {where:{id:id}})&&FeedingData.create(element);
+  FeedingData.destroy({where:{id:element.id}})&&FeedingData.create(element);
 //   console.log("feeding populated");
  }
 });

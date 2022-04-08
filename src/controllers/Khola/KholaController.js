@@ -31,10 +31,10 @@ try {
     FeedingData.destroy(element)&&CattleVaccinationData.create(element);
     console.log("created");
   }
-//   if(populated){
-
+   if(populated){
+  FeedingData.destroy(element)&&CattleVaccinationData.create(element);
 //   console.log("feeding populated");
-// }
+ }
 });
   const id = req.params.id;
   const makolaById = await Khola.findAll({ where: {UserId: id}});
@@ -105,12 +105,12 @@ if(animal==="cattle"){
       CattleVaccinationData.destroy(element)&&CattleVaccinationData.create(element);
       console.log("created");
     }
-  //   if(populated){
-  //   // CattleVaccinationData.destroy({where:{
-  //   //   id:element.id
-  //   // }})&&CattleVaccinationData.create(element);
-  //   // console.log("updated");
-  // }
+    if(populated){
+    CattleVaccinationData.destroy({where:{
+      id:element.id
+    }})&&CattleVaccinationData.create(element);
+    console.log("updated");
+  }
   });
 
 }else if(animal==="pig"){

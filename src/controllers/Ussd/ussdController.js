@@ -32,10 +32,12 @@ ussdController.post('/', async (req, res,next) => {
     let incoming=text.split('*');
     let khola;
     let records;
-    let totalRecords=0;
-    const today=new Date();
+    let total=0;
+    let location;
+    let lastUpdate;
     let nameOfKhola;
     let kholaId;
+    let length;
     console.log(`incoming is ${incoming}`);
 if(text==="")
 {
@@ -52,7 +54,7 @@ if(text!=="")
 // if(parseInt(incoming[1])>0){
 
 // }
-const length=incoming.length;
+ length=incoming.length;
     switch (length) {
       case 1:{
         response='CON Lowetsani ID ya khola'
@@ -67,7 +69,7 @@ const length=incoming.length;
           kholaId,
         );
         if(!khola){
-          response='END Khola Not found try again'
+          response='END Pepani silidapezeke khola la ID imeneyo'
         }
       
         //records=DailyRecordings.findAll({where:{Day:today,KholaId:kholaId}});
@@ -75,9 +77,13 @@ const length=incoming.length;
         //   const totalRecords=records.length;
         if(khola){
           nameOfKhola=khola.KholaName;
-          response=`CON khola ${nameOfKhola}
-              1.Today's schedule
-              2.Total livestock
+          total=khola.Number;
+          location=khola.Location;
+          lastUpdate=khola.updatedAt;
+          response=`END  khola la: ${nameOfKhola}
+              Nyama zokwana: ${total},
+              dera la :${location},
+              kufikira: ${lastUpdate}
                 `
         }
        
@@ -89,7 +95,7 @@ const length=incoming.length;
        case 3:{
          const input=incoming[3];
          if(input==="1"){
-           records=DailyRecordings.findAll({where:{Day:today,KholaId:kholaId}});
+           records=DailyRecordings.findAll({where:{KholaId:kholaId}});
            if(records){
              totalRecords=records.length;
             response=`END khola: ${nameOfKhola}
@@ -120,27 +126,83 @@ const length=incoming.length;
     }
     }
 
-  }else if(incoming[0]==="2"){
-    //logic for english
-      if(parseInt(incoming[1])>0){
-         
-  //  const user= await Users.findAll({where:{username:name,password:pass}}) ;
-          
-        // response='END your username is '+incoming[0]+'\n Your password is '+incoming[1]
-        if(user){
-          response=`END found `
-        }else if(!user){
-          response='END sorry user not found'
+  }
+   if(incoming[0]==="2"){
+     length=incoming.length;
+    switch (length) {
+      case 1:{
+        response='CON Enter Khola ID'
+        
+      }
+        
+        break;
+      case 2:{
+    
+          kholaId=incoming[1];
+        khola= await Khola.findByPk(
+          kholaId,
+        );
+        if(!khola){
+          response='END Pepani silidapezeke khola la ID imeneyo'
+        }
+      
+        //records=DailyRecordings.findAll({where:{Day:today,KholaId:kholaId}});
+        // if(records.length>0){
+        //   const totalRecords=records.length;
+        if(khola){
+          nameOfKhola=khola.KholaName;
+          total=khola.Number;
+          location=khola.Location;
+          lastUpdate=khola.updatedAt;
+          response=`END Summary of khola: ${nameOfKhola}
+              total livestock: ${total},
+              location :${location},
+              updated on: ${lastUpdate}
+                `
         }
        
-      
-  }else{
-    response='END error';
-  }
+        //}
+       
+        }
+          
+        break;
+       case 3:{
+         const input=incoming[3];
+         if(input==="1"){
+           records=DailyRecordings.findAll({where:{KholaId:kholaId}});
+           if(records){
+             totalRecords=records.length;
+            response=`END khola: ${nameOfKhola}
+            total of ${totalRecords} for today
+            `
+           }
+           if(!records){
+            response=`END khola: ${nameOfKhola}
+            does not have scheduled activities
+            today
+            `
+           }
+         
+        
+         }
+         else if(input==="2"){
+           response='END input 2'
+         }
+       
+        }
+          
+         break;
+    
+      default:{
+        response=`END  Sorry internal error ${length}`
+      }
+        break;
+    }
+    }
 
 
 // console.log(`incomings ${incoming}`);
-}
+
 
 setTimeout(()=>{
   console.log(incoming);

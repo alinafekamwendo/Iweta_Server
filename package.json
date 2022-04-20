@@ -38,6 +38,7 @@
     "node": "16.14.0"
   },
   "devDependencies": {
+    "jsdoc": "^3.6.10",
     "nodemon": "^2.0.15"
   }
 }

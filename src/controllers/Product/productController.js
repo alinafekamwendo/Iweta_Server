@@ -81,6 +81,8 @@ ProductController.post("/product/create/:id",validateToken, async (req, res,next
  ProductController.delete("/product/delete/:id", async (req, res,next) => {
    try {
     const productId = req.params.id;
+    const product=await Products.findByPk(productId);
+    if(!product){return res.status(404).json("Product with that id is not found");}
     await Products.destroy({
       where: {
         ProductId:productId,

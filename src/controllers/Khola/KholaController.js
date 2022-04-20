@@ -89,6 +89,8 @@ try {
 
 KholaController.post("/khola/create/:id",validateToken, async (req, res,next) => {
 
+  
+
   //variables
    
   const id=req.params.id;
@@ -149,24 +151,27 @@ const khola = req.body;
              await Khola.create(khola);
       res.status(200).json(khola);
       
+  
 //the following twilio sends sms as a comfirmation of khola created
 // //sms code starts here
-var sid=process.env.SID;
-//||
- var authToken=process.env.AUTH_TOKEN;
- //||
-  var twilio=require('twilio')(sid,authToken);
-  twilio.messages
-  .create({
-    from:'+16672269487',
-    to: '+265881814628',
-    body: `You have succesfully created khola.Name: ${KholaName},
-     Type: ${AnimalType}, 
-     Total Animals: ${Number}`,
-  })
-  .then((res)=>{console.log("message sent")})
-  .catch((err)=>{
-    console.log(err)});
+// var sid='AC620d0fc432d070e8cceb32655ed60c6c';
+// //process.env.SID;
+// //||
+//  var authToken='31695c6df9bdf133b5ba211285e2720d';
+//  //process.env.AUTH_TOKEN;
+//  //||
+//   var twilio=require('twilio')(sid,authToken);
+//   twilio.messages
+//   .create({
+//     from:'+16672269487',
+//     to: '+265881814628',
+//     body: `You have succesfully created khola.Name: ${KholaName},
+//      Type: ${AnimalType}, 
+//      Total Animals: ${Number}`,
+//   })
+//   .then((res)=>{console.log("message sent")})
+//   .catch((err)=>{
+//     console.log(err)});
   //sms code ends here
  
       } catch (error) {
@@ -184,6 +189,8 @@ var sid=process.env.SID;
  KholaController.delete("/khola/delete/:id", async (req, res,next) => {
    try {
     const kholaId = req.params.id;
+    const khola= await Khola.findByPk(kholaId);
+    if(!khola){return res.status(404).json("khola Not found")}
     await Khola.destroy({
       where: {
         id:kholaId,
@@ -196,11 +203,12 @@ var sid=process.env.SID;
  
 });
 
-KholaController.put("/khola/update/:id", async (req, res,next) => {
+KholaController.put("/khola/update/:id",validateToken, async (req, res,next) => {
  
 try {
   const id = req.params.id;
-  
+  const khola =await Khola.findByPk(id);
+  if(!khola){return res.status(404).json("No khola with such ID")};
   await Khola.update(req.body,{
     where: {
       id:id,

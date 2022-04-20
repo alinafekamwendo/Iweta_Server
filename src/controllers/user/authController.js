@@ -89,6 +89,7 @@ registerRouter.put("/auth/update/:id",validateToken, async (req, res,next) => {
 
 registerRouter.post("/auth/login", async (req, res,next) => {
   try {
+    console.log(req.body);
     const {username,password } = req.body;
   const user = await Users.findOne({ where: { username: username} });
 

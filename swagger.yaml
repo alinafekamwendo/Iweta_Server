@@ -1,10 +1,11 @@
-swagger: "2.0"
+openapi: "3.0.0"
 info:
   title: "iWETA system api"
   version: "1.0.0"
-  description: "restapi for iweta pig and cattle management system, our final year project"
+  description: "restapi for iweta pig and cattle management system by Alinafe kamwendo and Quwaniso Ngwira"
   contact: 
-    email: "bed-com-15-17@gmail.com"
+    name: alinafe kamwendo and Quawaniso Ngwira
+    email: "alinafekamwendo11@gmail.com"
   liscence:
     name: Apache 2.0
     url: "http://apache.org/"
@@ -13,9 +14,767 @@ info:
     description: The server runs on port 3001 locally
 
 schemes: [http,https]
-
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: accessToken
+security: 
+  - ApiKeyAuth: []
 paths:
+#aunthentication
   /auth/register:
     post:
       summary: creater user in the database
-      description: post user with username,role and password
+      tags:
+        - user
+      description: post user with username, phoneNumber, email,role,address,password
+      requestBody:
+        description: pass username,phone,email,role,address and password to register
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: 
+                - username
+                - phone
+                - email
+                - role
+                - address
+                - password
+              properties:
+                username:
+                  type: string
+                phone:
+                  type: string
+                email:
+                  type: string
+                role:
+                  type: string
+                address:
+                  type: string
+                password:
+                  type: string
+          application/xml:
+            schema:
+              type: object
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+      responses:
+        200:
+          description: success
+        409:
+          description: already registered
+        400:
+          description: invalid role
+        500:
+          description: internal server error
+  /auth/login:
+    post:
+      summary: authenticating user using pasword and username
+      tags:
+        - user
+      description: post user with username,password
+      requestBody:
+        description: pass username and password user registered with
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: 
+                - username
+                - password
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+          application/xml:
+            schema:
+              type: object
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+      
+      responses:
+        200:
+          description: success
+          schema:
+            type: object
+        403:
+          description: user does not exist
+        500:
+          description: internal server error
+    #logging in user
+  /auth/update/{id}:
+    put:
+      summary: update user given user ID
+      tags:
+        - user
+      description: post user with username, phoneNumber, email,role,address,password
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the user to update
+      requestBody:
+        description: pass username,phone,email,role,address and password to update
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: 
+                - username
+                - phone
+                - email
+                - role
+                - address
+                - password
+              properties:
+                username:
+                  type: string
+                phone:
+                  type: string
+                email:
+                  type: string
+                role:
+                  type: string
+                address:
+                  type: string
+                password:
+                  type: string
+          application/xml:
+            schema:
+              type: object
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+      responses:
+        200:
+          description: success
+        409:
+          description: already registered
+        400:
+          description: invalid role
+        500:
+          description: internal server error
+        403:
+          description: user does not exist
+        500:
+          description: internal server error
+    #logging in user
+  /auth/delete/{id}:
+    delete:
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+        
+      summary: delete user with given ID
+      tags:
+        - user
+      description: post user with username,password
+      responses:
+        200:
+          description: success
+        403:
+          description: user does not exist
+        500:
+          description: internal server error
+  /auth/basicinfo/{id}:
+    get:
+      summary: returns details of the user of given id
+      tags:
+        - user
+      description: pass user ID in the parameter to return his details
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the user 
+      responses:
+        200:
+          description: success
+        409:
+          description: already registered
+        400:
+          description: invalid role
+        500:
+          description: internal server error
+      responses:
+        200:
+          description: success
+        401:
+          description: Unathorized
+        500:
+          description: internal server error
+#khola
+  /khola/All:
+    get:
+      summary: returns array of all kholas
+      tags:
+        - khola
+      description: no parameters ,get all kholas 
+      responses:
+        200:
+          description: success
+        404:
+          description: Unathorized
+        500:
+          description: internal server error
+  /khola/ByUserId/{id}:
+    get:
+      summary: returns array of kholas belonging to user of given ID
+      tags:
+        - khola
+      description: pass user ID in the parameter to return his details
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the user 
+      responses:
+        200:
+          description: success
+        401:
+          description: Unathorized
+        500:
+          description: internal server error
+  /khola/ById/{id}:
+    get:
+      summary: returns khola of the given ID
+      tags:
+        - khola
+      description: pass khola ID in the parameter to return his details
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the required khola 
+      responses:
+        200:
+          description: success
+        401:
+          description: Unathorized
+        404:
+          description: Not Found
+        500:
+          description: internal server error
+  /khola/create/{userId}:
+    post:
+      summary: creater khola in the database
+      tags:
+        - khola
+      description: logged in farmer can create khola 
+      parameters:
+        - in: path
+          name: userId
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the owner ,user ID
+      requestBody:
+        description: khola must have KholaName,Location,AnimalType,Breed,Number, DateOfBirth
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: 
+                - KholaName
+                - Location
+                - AnimalType
+                - Breed
+                - Number
+                - DateOfBirth
+              properties:
+                KholaName:
+                  type: string
+                Location:
+                  type: string
+                AnimalType:
+                  type: string
+                Breed:
+                  type: string
+                Number:
+                  type: integer
+                DateOfBirth:
+                  type: string
+          application/xml:
+            schema:
+              type: object
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+      responses:
+        200:
+          description: success
+        404:
+          description: not found
+        406:
+          description: duplicates not allowed
+        401:
+          description: Unauthorized
+        500:
+          description: internal server error
+  /khola/delete/{id}:
+    delete:
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+        
+      summary: delete khola with given ID
+      tags:
+        - khola
+      description: pass khola ID in the parameter to delete that khola
+      responses:
+        200:
+          description: success
+        404:
+          description: Not found
+        500:
+          description: internal server error
+  /khola/update/{kholaId}:
+    put:
+      summary: update khola  of the given ID in the database
+      tags:
+        - khola
+      description: logged in farmer can update khola 
+      parameters:
+        - in: path
+          name: kholaId
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the khola
+      requestBody:
+        description: khola must have KholaName,Location,AnimalType,Breed,Number, DateOfBirth
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: 
+                - KholaName
+                - Location
+                - AnimalType
+                - Breed
+                - Number
+                - DateOfBirth
+              properties:
+                KholaName:
+                  type: string
+                Location:
+                  type: string
+                AnimalType:
+                  type: string
+                Breed:
+                  type: string
+                Number:
+                  type: integer
+                DateOfBirth:
+                  type: string
+          application/xml:
+            schema:
+              type: object
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+      responses:
+        200:
+          description: success
+        404:
+          description: not found
+        406:
+          description: duplicates not allowed
+        401:
+          description: Unauthorized
+        500:
+          description: internal server error
+  #products
+  /product/All:
+    get:
+      summary: returns array of all products
+      tags:
+        - products
+      description: get all products on market
+      responses:
+        200:
+          description: success
+        404:
+          description: Unathorized
+        500:
+          description: internal server error
+  /product/bySupplier/{supplierId}:
+    get:
+      summary: returns array of kholas belonging to the supplier with given ID
+      tags:
+        - products
+      description: pass supplier ID to get all products belonging to the supplier
+      parameters:
+        - in: path
+          name: supplierId
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the supplier
+      responses:
+        200:
+          description: success
+        401:
+          description: Unathorized
+        500:
+          description: internal server error
+  /product/byId/{productId}:
+    get:
+      summary: returns product of the given ID
+      tags:
+        - products
+      description: pass product ID in the parameter to return his details
+      parameters:
+        - in: path
+          name: productId
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the required product
+      responses:
+        200:
+          description: success
+        401:
+          description: Unathorized
+        404:
+          description: Not Found
+        500:
+          description: internal server error
+  /product/create/{supplierId}:
+    post:
+      summary: creater khola in the database
+      tags:
+        - products
+      description: supplier can post product passing its name, category, description,price 
+      parameters:
+        - in: path
+          name: supplierId
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the owner ,supplier ID
+      requestBody:
+        description: product must have Name,Category,Description,Price
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: 
+                - Name
+                - Category
+                - Description
+                - Price
+              properties:
+                Name:
+                  type: string
+                Category:
+                  type: string
+                Description:
+                  type: string
+                Price:
+                  type: number
+          application/xml:
+            schema:
+              type: object
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+      responses:
+        200:
+          description: success
+        404:
+          description: not found
+        406:
+          description: duplicates not allowed
+        401:
+          description: Unauthorized
+        500:
+          description: internal server error
+  /product/delete/{productId}:
+    delete:
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          schema:
+            type: integer
+        
+      summary: delete product with given ID
+      tags:
+        - products
+      description: pass product ID in the parameter to delete that product
+      responses:
+        200:
+          description: success
+        404:
+          description: Not found
+        500:
+          description: internal server error
+  /product/update/{productId}:
+    put:
+      summary: update khola  of the given ID in the database
+      tags:
+        - products
+      description: logged in farmer can update khola 
+      parameters:
+        - in: path
+          name: productId
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the product
+      requestBody:
+        description: values of the product can be different or same to update 
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: 
+                - Name
+                - Category
+                - Description
+                - Price
+              properties:
+                Name:
+                  type: string
+                Category:
+                  type: string
+                Description:
+                  type: string
+                Price:
+                  type: number
+          application/xml:
+            schema:
+              type: object
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+      responses:
+        200:
+          description: success
+        404:
+          description: not found
+        406:
+          description: duplicates not allowed
+        401:
+          description: Unauthorized
+        500:
+          description: internal server error
+  #records
+  /records/All:
+    get:
+      summary: returns array of all records in the database
+      tags:
+        - records
+      description: get all records in the database
+      responses:
+        200:
+          description: success
+        404:
+          description: Unathorized
+        500:
+          description: internal server error
+  /records/bykhola/{kholaId}:
+    get:
+      summary: returns array of records belonging to the khola with given ID
+      tags:
+        - records
+      description: pass khola ID to get all records belonging to the khola
+      parameters:
+        - in: path
+          name: kholaId
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the khola
+      responses:
+        200:
+          description: success
+        401:
+          description: Unathorized
+        500:
+          description: internal server error
+  /records/byId/{recordId}:
+    get:
+      summary: returns record of the given ID
+      tags:
+        - records
+      description: pass record ID in the parameter to return his details
+      parameters:
+        - in: path
+          name: recordId
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the required record
+      responses:
+        200:
+          description: success
+        401:
+          description: Unathorized
+        404:
+          description: Not Found
+        500:
+          description: internal server error
+  /records/create/{kholaId}:
+    post:
+      summary: creater record of khola in the database
+      tags:
+        - records
+      description: can post record passing Day of recording, activities done on that day, diseases recorded on that day,number of affected animals with the disease, costs incurred that day, and general comments if any
+      parameters:
+        - in: path
+          name: kholaId
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the khola
+      requestBody:
+        description: record must have Day,Activities,Diseases,Affected,Costs,Comments
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: 
+                - Day
+                - Activities
+                - Diseases
+                - Affected
+                - Costs
+                - Comments
+              properties:
+                Day:
+                  type: string
+                Activities:
+                  type: string
+                Diseases:
+                  type: string
+                Affected:
+                  type: integer
+                Costs:
+                  type: number
+                Comments:
+                  type: string
+          application/xml:
+            schema:
+              type: object
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+      responses:
+        200:
+          description: success
+        404:
+          description: not found
+        406:
+          description: duplicates not allowed
+        401:
+          description: Unauthorized
+        500:
+          description: internal server error
+  /records/delete/{recordId}:
+    delete:
+      parameters:
+        - name: recordId
+          in: path
+          required: true
+          schema:
+            type: integer
+        
+      summary: delete record with given ID
+      tags:
+        - records
+      description: pass record ID in the parameter to delete that record
+      responses:
+        200:
+          description: success
+        404:
+          description: Not found
+        500:
+          description: internal server error
+  /records/update/{recordId}:
+    put:
+      summary: update record  of the given ID in the database
+      tags:
+        - records
+      description: values of record properties can all be changed or maintained to update
+      parameters:
+        - in: path
+          name: recordId
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the record
+      requestBody:
+        description: record must have Day,Activities,Diseases,Affected,Costs,Comments
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: 
+                - Day
+                - Activities
+                - Diseases
+                - Affected
+                - Costs
+                - Comments
+              properties:
+                Day:
+                  type: string
+                Activities:
+                  type: string
+                Diseases:
+                  type: string
+                Affected:
+                  type: integer
+                Costs:
+                  type: number
+                Comments:
+                  type: string
+          application/xml:
+            schema:
+              type: object
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+      responses:
+        200:
+          description: success
+        404:
+          description: not found
+        406:
+          description: duplicates not allowed
+        401:
+          description: Unauthorized
+        500:
+          description: internal server error
+   

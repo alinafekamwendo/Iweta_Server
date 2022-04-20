@@ -5,7 +5,7 @@ const {Users,DailyRecordings} = require("../../models");
 const { validateToken } = require("../../../middlewares/AuthMiddleware");
 
 
-dailyRecordsController.get("/records/All", async (req, res,next) => {
+dailyRecordsController.get("/records/All",validateToken, async (req, res,next) => {
 try {
   
 const records = await DailyRecordings.findAll();
@@ -77,6 +77,8 @@ dailyRecordsController.post("/records/create/:id",validateToken, async (req, res
  dailyRecordsController.delete("/records/delete/:id", async (req, res,next) => {
    try {
     const id = req.params.id;
+    const record=await DailyRecordings.findByPk(id);
+    if(!record){return res.status(404).json("Record with that ID not found");}
     await DailyRecordings.destroy({
       where: {
         id:id,
@@ -110,15 +112,6 @@ next(error);
 }
 
 });
-
-  // nodeCron.schedule('* * * * *', function() {
-  //   try {
-   
-  //   console.log('running a task every SECOND');
-  // } catch (error) {
-  //   res.send(500).json({error:error.message});
-  // }  
-  // });
 
 
 module.exports = dailyRecordsController;

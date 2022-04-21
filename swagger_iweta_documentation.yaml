@@ -777,4 +777,484 @@ paths:
           description: Unauthorized
         500:
           description: internal server error
+  #schedules
+  /schedules/All:
+    get:
+      summary: returns array of all schedules
+      tags:
+        - schedules
+      description: get all schedules in the database
+      responses:
+        200:
+          description: success
+        404:
+          description: Unathorized
+        500:
+          description: internal server error
+  /schedules/bykhola/{kholaId}:
+    get:
+      summary: returns array of schedules belonging to the khola with given ID
+      tags:
+        - schedules
+      description: pass khola ID to get all schedules belonging to the khola
+      parameters:
+        - in: path
+          name: kholaId
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the khola
+      responses:
+        200:
+          description: success
+        401:
+          description: Unathorized
+        500:
+          description: internal server error
+  /schedules/byId/{scheduleId}:
+    get:
+      summary: returns scheule of the given ID
+      tags:
+        - schedules
+      description: pass schedule ID in the parameter to return his details
+      parameters:
+        - in: path
+          name: scheduleId
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the required schedule
+      responses:
+        200:
+          description: success
+        401:
+          description: Unathorized
+        404:
+          description: Not Found
+        500:
+          description: internal server error
+  /schedules/create/{kholaId}:
+    post:
+      summary: creater schedule in the database
+      tags:
+        - schedules
+      description: post json of Day and Activity
+      parameters:
+        - in: path
+          name: kholaId
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of khola
+      requestBody:
+        description: schedule has Day and Activity
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: 
+                - Day
+                - Activity
+              properties:
+                Day:
+                  type: string
+                Activity:
+                  type: string
+      responses:
+        200:
+          description: success
+        404:
+          description: not found
+        406:
+          description: duplicates not allowed
+        401:
+          description: Unauthorized
+        500:
+          description: internal server error
+  /schedules/delete/{scheduleId}:
+    delete:
+      parameters:
+        - name: scheduleId
+          in: path
+          required: true
+          schema:
+            type: integer
+        
+      summary: delete schedule with given ID
+      tags:
+        - schedules
+      description: pass schedule ID in the parameter to delete it
+      responses:
+        200:
+          description: success
+        404:
+          description: Not found
+        500:
+          description: internal server error
+  /schedules/update/{scheduleId}:
+    put:
+      summary: update schedule  of the given ID in the database
+      tags:
+        - schedules
+      description: logged in farmer can update khola 
+      parameters:
+        - in: path
+          name: scheduleId
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the schedule
+      requestBody:
+        description: values of the schedule can be different or same to update 
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: 
+                - Day
+                - Activity
+              properties:
+                Day:
+                  type: string
+                Activity:
+                  type: string
+      responses:
+        200:
+          description: success
+        404:
+          description: not found
+        406:
+          description: duplicates not allowed
+        401:
+          description: Unauthorized
+        500:
+          description: internal server error
+          #Forum
+  /posts/All:
+    get:
+      summary: returns array of all posts on forum
+      tags:
+        - forum
+      description: get all posts on forum
+      responses:
+        200:
+          description: success
+        404:
+          description: Unathorized
+        500:
+          description: internal server error
+  /posts/byuserId/{userId}:
+    get:
+      summary: returns array of posts belonging to the user with given ID
+      tags:
+        - forum
+      description: pass user ID to get all posts belonging to him
+      parameters:
+        - in: path
+          name: userId
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the user who posted it
+      responses:
+        200:
+          description: success
+        401:
+          description: Unathorized
+        500:
+          description: internal server error
+  /posts/byId/{postId}:
+    get:
+      summary: returns post of the given ID
+      tags:
+        - forum
+      description: pass post ID in the parameter to return his details
+      parameters:
+        - in: path
+          name: postId
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the required post
+      responses:
+        200:
+          description: success
+        401:
+          description: Unathorized
+        404:
+          description: Not Found
+        500:
+          description: internal server error
+  /posts/create:
+    post:
+      summary: create post in the database
+      tags:
+        - forum
+      description: create a post on forum passing its title,post body text,  
+      requestBody:
+        description: post must have title,postText
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: 
+                - title
+                - postText
+              properties:
+                title:
+                  type: string
+                postText:
+                  type: string
+      responses:
+        200:
+          description: success
+        404:
+          description: not found
+        406:
+          description: duplicates not allowed
+        401:
+          description: Unauthorized
+        500:
+          description: internal server error
+  /posts/delete/{postId}:
+    delete:
+      parameters:
+        - name: postId
+          in: path
+          required: true
+          schema:
+            type: integer
+        
+      summary: delete post with given ID
+      tags:
+        - forum
+      description: pass post ID in the parameter to delete 
+      responses:
+        200:
+          description: success
+        404:
+          description: Not found
+        500:
+          description: internal server error
+  /posts/updatePost/{postId}:
+    put:
+      summary: update post  of the given ID in the database
+      tags:
+        - forum
+      description: logged in farmer edit his post
+      parameters:
+        - in: path
+          name: postId
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the post
+      requestBody:
+        description: values of the post can be different or same to update
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: 
+                - title
+                - postText
+              properties:
+                title:
+                  type: string
+                postText:
+                  type: string
+          application/xml:
+            schema:
+              type: object
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+      responses:
+        200:
+          description: success
+        404:
+          description: not found
+        401:
+          description: Unauthorized
+        500:
+          description: internal server error
+  #comments  
+  /comments/All:
+    get:
+      summary: returns array of all comments on specific post
+      tags:
+        - forum
+      description: get all comments of one post
+      responses:
+        200:
+          description: success
+        500:
+          description: internal server error
+  /comments/byPost/{postId}:
+    get:
+      summary: returns array of comments objects belonging to the post with given ID
+      tags:
+        - forum
+      description: pass post ID to get all comments belonging to it
+      parameters:
+        - in: path
+          name: postId
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the post 
+      responses:
+        200:
+          description: success
+        401:
+          description: Unathorized
+        500:
+          description: internal server error
+  /comments/postComment/{postId}:
+    post:
+      summary: create comment in the database
+      tags:
+        - forum
+      description: create a comment on post passing its comment body,  
+      requestBody:
+        description:  pass comment body only to comment on some post
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: 
+                - commentBody
+              properties:
+                commentBody:
+                  type: string
+      responses:
+        200:
+          description: success
+        404:
+          description: not found
+        406:
+          description: duplicates not allowed
+        401:
+          description: Unauthorized
+        500:
+          description: internal server error
+  /comments/delete/{commentId}:
+    delete:
+      parameters:
+        - name: commentId
+          in: path
+          required: true
+          schema:
+            type: integer
+        
+      summary: delete comment with given ID, first checks if the comment exist the update it otherwise 404 error
+      tags:
+        - forum
+      description: pass comment ID in the parameter to delete 
+      responses:
+        200:
+          description: success
+        404:
+          description: Not found
+        500:
+          description: internal server error
+  /comments/updateComment/{commentId}:
+    put:
+      summary: update comment  of the given ID in the database
+      tags:
+        - forum
+      description: only farmer who commented it can edit the comment
+      parameters:
+        - in: path
+          name: commentId
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the comment
+      requestBody:
+        description: comment body of the comment can be different or same to update
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: 
+                - commentBody
+              properties:
+                commentBody:
+                  type: string
+          application/xml:
+            schema:
+              type: object
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+      responses:
+        200:
+          description: success
+        404:
+          description: not found
+        401:
+          description: Unauthorized
+        500:
+          description: internal server error
+  #reports
+  /khola/report/feeding/{kholaId}:
+    get:
+      summary: returns feeding report of given khola
+      tags:
+        - reports
+      description: pass khola ID to get its feeding report
+      parameters:
+        - in: path
+          name: kholaId
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the khola 
+      responses:
+        200:
+          description: success
+        401:
+          description: Unathorized
+        500:
+          description: internal server error
+  /khola/report/vaccination/{kholaId}:
+    get:
+      summary: returns vaccination report of given khola showing missing if its due is past or pending if not due
+      tags:
+        - reports
+      description: pass khola ID to get its vaccination report
+      parameters:
+        - in: path
+          name: kholaId
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the khola 
+      responses:
+        200:
+          description: success
+        401:
+          description: Unathorized
+        500:
+          description: internal server error
+  /ussd:
+    post:
+      summary: handles logic for USSD app, any USSD simulator can reach this endpoint through *384*29891# through africa's talking gateway
+      tags:
+        - ussd
+      description: dial *384*29891# on USSD simulator and will interact with the server 
+      responses:
+        200:
+          description: success
+        404:
+          description: Not found
+        500:
+          description: internal server error
    

@@ -47,6 +47,8 @@ KholaReportController.get("/khola/report/vaccination/:id",async (req, res,next) 
    
     const kholaId=req.params.id;
 
+    const available=await Kholas.findByPk(kholaId);
+    if(!available){return res.status(404).json("Khola not found");}
     //derived variables
     const khola=await Kholas.findOne({where:{id:kholaId}});
     const beefVaccines=await CattleVaccinationData.findAll(
@@ -391,8 +393,10 @@ try{
 
 
   KholaReportController.get("/khola/report/feeding/:id",async (req,res,next)=>{
-try {
     const kholaId=req.params.id;
+    const available=await Kholas.findByPk(kholaId);
+    if(!available){return res.status(404).json("Khola not found");}
+try {
 
     //derived variables
     const khola=await Kholas.findOne({where:{id:kholaId}});
@@ -406,11 +410,7 @@ try {
     const breed=anaimalBreed.toLowerCase();
     const location=khola.Location;
     const created=khola.createdAt;
-    //testing
-    console.log("khola created on :",created);
-    console.log("khola name :",kholaName);
-    console.log("khola for :",typeOfAnimal);
-    console.log("Located at:",location);
+    
     res.status(200).json(feedingData);
 } catch (error) {
     next(error);

@@ -1,17 +1,19 @@
 {
   "development": {
-    "username": "alinafekamwendo",
+    "username": "postgres",
     "password": "1517",
     "database": "alis",
     "host": "localhost",
-    "dialect": "postgres"
+    "dialect": "postgres",
+    "logging": false
   },
   "test": {
     "username": "alinafekamwendo",
     "password": "1517",
     "database": "alis",
     "host": "localhost",
-    "dialect": "postgres"
+    "dialect": "postgres",
+    "logging": false
   },
   "production": {
     "use_env_variable":"DATABASE_URL",

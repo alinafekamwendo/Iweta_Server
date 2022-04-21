@@ -20,6 +20,8 @@ postRouter.post("/create", validateToken, async (req, res,next) => {
     try {
       const post = req.body;
       const postId=req.params.postId;
+      const available =await Posts.findByPk(postId);
+      if(!available){return res.status(404).json("Post not found");}
       
       await Posts.update(post,{
         where:{
@@ -44,6 +46,8 @@ postRouter.post("/create", validateToken, async (req, res,next) => {
   //this is happening with login too
   postRouter.delete("/delete/:postId", validateToken, async (req, res) => {
     const postId = req.params.postId;
+    const available=await Posts.findByPk(postId);
+    if(!available){return res.status(404).json("Post with that ID not found");}
     await Posts.destroy({
       where: {
         id: postId,

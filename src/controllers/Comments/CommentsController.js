@@ -32,7 +32,7 @@ CommentsRoute.get("/byPost/:postId", async (req, res,next) => {
       comment.username = username;
       await Comments.create(comment);
       res.status(200).json(comment);
-      console.log("successfully posted");
+      console.log("successfully commented");
     } catch (error) {
       next(error)
     }
@@ -43,7 +43,8 @@ CommentsRoute.get("/byPost/:postId", async (req, res,next) => {
     try {
       const id=req.params.commentId;
       const comment = req.body;
-      console.log(id);
+      const available=await Comments.findByPk(id);
+      if(!available){return res.status(404).json("Comment to be updated not found");}
       //const username = req.user.username;
      // comment.username = username;
       await Comments.update(comment,{
@@ -62,6 +63,8 @@ CommentsRoute.get("/byPost/:postId", async (req, res,next) => {
   CommentsRoute.delete("/delete/:commentId", validateToken, async (req, res,next) => {
     try {
       const commentId = req.params.commentId;
+      const available=await Comments.findByPk(commentId);
+      if(!available){return res.status(404).json("Sorry Comment with  given ID cannot be found");}
   
       await Comments.destroy({
         where: {

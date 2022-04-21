@@ -76,6 +76,8 @@ ScheduleController.post("/schedules/create/:id",validateToken, async (req, res,n
  ScheduleController.delete("/schedules/delete/:id", async (req, res,next) => {
    try {
     const id = req.params.id;
+    const available =await Schedules.findByPk(id);
+    if(!available){return res.status(404).json("Schedule not found");}
     await Schedules.destroy({
       where: {
         id:id,
